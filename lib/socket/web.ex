@@ -229,7 +229,7 @@ defmodule Socket.Web do
     client |> Socket.packet!(:raw)
     client |> Socket.Stream.send! [
       "GET #{path} HTTP/1.1", "\r\n",
-      "Host: #{address}:#{port}", "\r\n",
+      "Host: #{address}#{(case options[:no_port] do ; true -> "" ; _ -> ":#{port}" ; end)}", "\r\n",
       if(origin, do: ["Origin: #{origin}", "\r\n"], else: []),
       "Upgrade: websocket", "\r\n",
       "Connection: Upgrade", "\r\n",
@@ -271,7 +271,7 @@ defmodule Socket.Web do
   Listens on the default port (80).
   """
   @spec listen :: { :ok, t } | { :error, error }
-  def listen do 
+  def listen do
     listen([])
   end
 
@@ -322,7 +322,7 @@ defmodule Socket.Web do
   Listens on the default port (80), raising if an error occurs.
   """
   @spec listen! :: t | no_return
-  def listen! do 
+  def listen! do
     listen!([])
   end
 
